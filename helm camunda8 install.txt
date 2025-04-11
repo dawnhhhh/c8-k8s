@@ -2,14 +2,17 @@ kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisione
 kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 kubectl get storageclass
 
-helm install ingress-nginx /ingress-nginx
+tar -zxvf ingress-nginx-4.12.0.tgz
+tar -zxvf camunda-platform-11.3.0.tgz
+
+helm install ingress-nginx ./ingress-nginx 
 kubectl get IngressClass
 kubectl patch svc ingress-nginx-controller -p '{"spec": {"type": "LoadBalancer", "externalIPs":["internet ip"]}}'
 
-helm install camunda -f values.yaml
+helm install camunda ./camunda-platform -f values.yaml
 
-kubectl apply -f zeebe-gateway.yaml
-kubectl patch svc camunda-zeebe-gateway-lb -n default -p '{"spec": {"type": "LoadBalancer", "externalIPs":["internet ip"]}}'
+kubectl apply -f zeebe-gateway-lb.yaml
+kubectl patch svc camunda-zeebe-gateway-lb -p '{"spec": {"type": "LoadBalancer", "externalIPs":["internet ip"]}}'
 
 # uninstall
 helm uninstall camunda
