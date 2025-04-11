@@ -1,0 +1,18 @@
+kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
+kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+kubectl get storageclass
+
+helm install ingress-nginx /ingress-nginx
+kubectl get IngressClass
+kubectl patch svc ingress-nginx-controller -p '{"spec": {"type": "LoadBalancer", "externalIPs":["internet ip"]}}'
+
+helm install camunda -f values.yaml
+
+kubectl apply -f zeebe-gateway.yaml
+kubectl patch svc camunda-zeebe-gateway-lb -n default -p '{"spec": {"type": "LoadBalancer", "externalIPs":["internet ip"]}}'
+
+# uninstall
+helm uninstall camunda
+kubectl delete pvc --all
+
+
