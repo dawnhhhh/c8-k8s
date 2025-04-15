@@ -1,0 +1,85 @@
+global:
+  ingress:
+    enabled: true
+    className: nginx
+    host: "camunda.dawn.ltd"
+    tls:
+      enabled: true
+      secretName: "tls-dawn"
+  identity:
+    auth:
+      publicIssuerUrl: "https://camunda.dawn.ltd:26643/auth/realms/camunda-platform"
+      operate:
+        redirectUrl: "https://camunda.dawn.ltd:26643/operate"
+      tasklist:
+        redirectUrl: "https://camunda.dawn.ltd:26643/tasklist"
+      optimize:
+        redirectUrl: "https://camunda.dawn.ltd:26643/optimize"
+
+identity:
+  contextPath: "/identity"
+  fullURL: "https://camunda.dawn.ltd:26643/identity"
+
+  keycloak: 
+    ingress: 
+      enabled: true
+      ingressClassName: nginx
+      hostname: "camunda.dawn.ltd"
+    extraEnvVars: 
+      - name: KEYCLOAK_PROXY_ADDRESS_FORWARDING
+        value: "true"
+      - name: KEYCLOAK_FRONTEND_URL
+        value: "https://camunda.dawn.ltd:26643/auth/"
+
+operate:
+  contextPath: "/operate"
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    path: /
+    host: "camunda.dawn.ltd"
+    tls:
+      enabled: true
+      secretName: "tls-dawn"
+
+optimize:
+  contextPath: "/optimize"
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-redirect: 'true' 
+    path: /
+    host: "camunda.dawn.ltd"
+    tls:
+      enabled: true
+      secretName: "tls-dawn"
+
+tasklist:
+  contextPath: "/tasklist"
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    path: /
+    host: "camunda.dawn.ltd"
+    tls:
+      enabled: true
+      secretName: "tls-dawn"
+
+zeebeGateway:
+  ingress:
+    grpc:
+      enabled: true
+      className: nginx
+      annotations:
+        nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+        nginx.ingress.kubernetes.io/backend-protocol: 'GRPC'
+        nginx.ingress.kubernetes.io/proxy-buffer-size: '128k'
+      host: "zeebe.camunda.dawn.ltd"
+      tls:
+        enabled: true
+        secretName: "tls-dawn"
