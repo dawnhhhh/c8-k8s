@@ -20,55 +20,14 @@ identity:
   contextPath: "/identity"
   fullURL: "https://camunda.dawn.ltd:26643/identity"
 
-  keycloak: 
-    ingress: 
-      enabled: true
-      ingressClassName: nginx
-      hostname: "camunda.dawn.ltd"
-    extraEnvVars: 
-      - name: KEYCLOAK_PROXY_ADDRESS_FORWARDING
-        value: "true"
-      - name: KEYCLOAK_FRONTEND_URL
-        value: "https://camunda.dawn.ltd:26643/auth/"
-
 operate:
   contextPath: "/operate"
-  ingress:
-    enabled: true
-    className: nginx
-    annotations:
-      nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-    path: /
-    host: "camunda.dawn.ltd"
-    tls:
-      enabled: true
-      secretName: "tls-dawn"
 
 optimize:
   contextPath: "/optimize"
-  ingress:
-    enabled: true
-    className: nginx
-    annotations:
-      nginx.ingress.kubernetes.io/ssl-redirect: 'true' 
-    path: /
-    host: "camunda.dawn.ltd"
-    tls:
-      enabled: true
-      secretName: "tls-dawn"
 
 tasklist:
   contextPath: "/tasklist"
-  ingress:
-    enabled: true
-    className: nginx
-    annotations:
-      nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-    path: /
-    host: "camunda.dawn.ltd"
-    tls:
-      enabled: true
-      secretName: "tls-dawn"
 
 zeebeGateway:
   ingress:
